@@ -20,15 +20,16 @@ public class User {
     private long id;
 
     @Size(min = 4,max = 255)
-    @NotBlank
+    @NotBlank(message = "{hoaxify.constraint.username.notblank}")
     private String username;
 
-    @NotBlank
+    @NotBlank(message = "{hoaxify.constraint.email.notunique}")
     @Email
     @UniqueEmail
     private String email;
 
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\\\d).*$")
+    @Size(min = 8,max = 255)
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\\\d).*$",message = "{}")
     private String password;
 
     public String getUsername() {
