@@ -1,4 +1,4 @@
-package com.hoaxify.ws.user;
+package com.hoaxify.ws.user.exception;
 
 import com.hoaxify.ws.shared.Messages;
 import java.util.Collections;

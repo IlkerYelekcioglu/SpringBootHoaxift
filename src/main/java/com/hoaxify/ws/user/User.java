@@ -23,13 +23,13 @@ public class User {
     @NotBlank(message = "{hoaxify.constraint.username.notblank}")
     private String username;
 
-    @NotBlank(message = "{hoaxify.constraint.email.notunique}")
+    @NotBlank
     @Email
     @UniqueEmail
     private String email;
 
     @Size(min = 8,max = 255)
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\\\d).*$",message = "{}")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\\\d).*$",message = "{hoaxify.constraint.email.pattern}")
     private String password;
 
     public String getUsername() {
