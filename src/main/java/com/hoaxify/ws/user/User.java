@@ -1,15 +1,11 @@
 package com.hoaxify.ws.user;
 
-import com.hoaxify.ws.user.validation.UniqueEmail;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+
 
 @Entity
 @Table(name = "USERS",uniqueConstraints = @UniqueConstraint(columnNames = {"email"}))
@@ -17,20 +13,24 @@ public class User {
 
     @Id
     @GeneratedValue
-    private long id;
+    long id;
 
-    @Size(min = 4,max = 255)
-    @NotBlank(message = "{hoaxify.constraint.username.notblank}")
-    private String username;
+    String username;
 
-    @NotBlank
-    @Email
-    @UniqueEmail
-    private String email;
+    String email;
+    String password;
 
-    @Size(min = 8,max = 255)
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\\\d).*$",message = "{hoaxify.constraint.email.pattern}")
-    private String password;
+    boolean active = false;
+
+    String activationToken;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getUsername() {
         return username;
@@ -54,5 +54,22 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public String getActivationToken() {
+        return activationToken;
+    }
+
+    public void setActivationToken(String activationToken) {
+        this.activationToken = activationToken;
     }
 }
