@@ -38,4 +38,13 @@ public class UserService {
     }
 
 
+  public void activateUser(String token) {
+        User inDB = userRepository.findByActivationToken(token);
+        if(inDB == null){
+            throw new ActivationNotificationException();
+        }else {
+            inDB.setActive(true);
+            inDB.setActivationToken(null);
+        }
+  }
 }
