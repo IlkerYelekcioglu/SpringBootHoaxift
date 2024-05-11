@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-public record UserCreateDTO(
+public record UserCreate(
     @Size(min = 4,max = 255)
     @NotBlank(message = "{hoaxify.constraint.username.notblank}")
     String username,
