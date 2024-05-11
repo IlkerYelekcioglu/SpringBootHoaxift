@@ -1,5 +1,6 @@
 package com.hoaxify.ws.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -18,11 +19,28 @@ public class User {
     String username;
 
     String email;
+
+    @JsonIgnore
     String password;
 
+    @JsonIgnore
     boolean active = false;
 
+    @JsonIgnore
     String activationToken;
+
+    String image;
+
+    String firstName;
+
+    String lastName;
+
+    /**
+     * Görünmesini istemediğimiz fieldların tepesine JsonIgnore annotation ı kullanırız.
+     *
+     */
+
+
 
     public long getId() {
         return id;
@@ -71,5 +89,29 @@ public class User {
 
     public void setActivationToken(String activationToken) {
         this.activationToken = activationToken;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }

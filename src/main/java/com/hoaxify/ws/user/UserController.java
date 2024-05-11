@@ -3,7 +3,8 @@ package com.hoaxify.ws.user;
 import com.hoaxify.ws.error.ApiError;
 import com.hoaxify.ws.shared.GenericMessage;
 import com.hoaxify.ws.shared.Messages;
-import com.hoaxify.ws.user.dto.UserCreateDTO;
+import com.hoaxify.ws.user.dto.UserCreate;
+import com.hoaxify.ws.user.dto.UserDTO;
 import com.hoaxify.ws.user.exception.ActivationNotificationException;
 import com.hoaxify.ws.user.exception.InvalidTokenException;
 import com.hoaxify.ws.user.exception.NotUniqueEmailException;
@@ -11,10 +12,13 @@ import jakarta.validation.Valid;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,7 +32,7 @@ public class UserController {
    UserService userService;
 
   @PostMapping("/api/v1/users")
-   GenericMessage createUser(@Valid @RequestBody UserCreateDTO user) {
+   GenericMessage createUser(@Valid @RequestBody UserCreate user) {
     userService.save(user.toUser());
     String message = Messages.getMessageForLocale("hoaxify.create.user.success.message", LocaleContextHolder.getLocale());
     return new GenericMessage(message);
@@ -38,6 +42,11 @@ public class UserController {
     userService.activateUser(token);
     String message = Messages.getMessageForLocale("hoaxify.activate.user.success.message", LocaleContextHolder.getLocale());
     return new GenericMessage(message);
+  }
+
+  @GetMapping("/api/v1/users")
+  Page<UserDTO> getUsers(Pageable pageable){
+    return  userService.getUsers(pageable).map(UserDTO::new);
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
