@@ -1,7 +1,9 @@
 package com.hoaxify.ws.user;
 
 import com.hoaxify.ws.email.EmailService;
+import com.hoaxify.ws.user.dto.UserDTO;
 import com.hoaxify.ws.user.exception.ActivationNotificationException;
+import com.hoaxify.ws.user.exception.NotFoundException;
 import com.hoaxify.ws.user.exception.NotUniqueEmailException;
 import jakarta.transaction.Transactional;
 import java.util.UUID;
@@ -52,5 +54,9 @@ public class UserService {
 
   public Page<User> getUsers(Pageable page) {
       return userRepository.findAll(page);
+  }
+
+  public User getUser(long id) {
+      return userRepository.findById(id).orElseThrow(()-> new NotFoundException(id));
   }
 }
