@@ -1,7 +1,6 @@
 package com.hoaxify.ws.user;
 
 import com.hoaxify.ws.email.EmailService;
-import com.hoaxify.ws.user.dto.UserDTO;
 import com.hoaxify.ws.user.exception.ActivationNotificationException;
 import com.hoaxify.ws.user.exception.NotFoundException;
 import com.hoaxify.ws.user.exception.NotUniqueEmailException;
@@ -59,4 +58,8 @@ public class UserService {
   public User getUser(long id) {
       return userRepository.findById(id).orElseThrow(()-> new NotFoundException(id));
   }
+
+  public User findByEmail(String email) {
+     return userRepository.findByEmail(email);
+    }
 }
