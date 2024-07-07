@@ -7,5 +7,5 @@ import com.hoaxify.ws.user.User;
 public interface TokenService {
     public Token createToken(User user, Credentials creds);
 
-    public User verifyUser(String authorizationHeader);
+    public User verifyToken(String authorizationHeader);
 }
