@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
@@ -29,17 +30,18 @@ public class User {
     @JsonIgnore
     String activationToken;
 
+    @Lob
     String image;
 
-    String firstName;
-
-    String lastName;
 
     /**
      * Görünmesini istemediğimiz fieldların tepesine JsonIgnore annotation ı kullanırız.
      *
      */
 
+    /*
+    Blob lobları araştır
+     */
 
 
     public long getId() {
@@ -99,19 +101,4 @@ public class User {
         this.image = image;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
 }
