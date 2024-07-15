@@ -17,7 +17,6 @@ public class UserDTO {
     setId(user.getId());
     setUsername(user.getUsername());
     setEmail(user.getEmail());
-    setFullName(user.getFirstName() + " " + user.getLastName());
     setImage(user.getImage());
   }
 

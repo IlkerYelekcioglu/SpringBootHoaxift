@@ -1,5 +1,6 @@
 package com.hoaxify.ws.user;
 
+import com.hoaxify.ws.FileService;
 import com.hoaxify.ws.configuration.CurrentUser;
 import com.hoaxify.ws.email.EmailService;
 import com.hoaxify.ws.user.dto.UserUpdate;
@@ -25,6 +26,9 @@ public class UserService {
 
     @Autowired
     EmailService emailService;
+
+    @Autowired
+    FileService fileService;
 
     @Transactional(rollbackOn = {MailException.class})
     public void save(User user){
@@ -70,6 +74,11 @@ public class UserService {
   public User updateUser(long id, UserUpdate userUpdate) {
       User inDb = getUser(id);
       inDb.setPassword(userUpdate.username());
+      if(userUpdate.image() != null){
+        String fileName = fileService.save64BaseStringAsFile(userUpdate.image());
+        fileService.deleteProfileImage(inDb.getImage());
+        inDb.setImage(userUpdate.image());
+      }
       return  userRepository.save(inDb);
   }
 }
