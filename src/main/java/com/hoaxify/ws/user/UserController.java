@@ -55,9 +55,6 @@ UserDTO getUserById(@PathVariable long id) {
 @PutMapping("/api/v1/users/{id}")
 @PreAuthorize("#id == #principal.id")
   UserDTO updateUser(@PathVariable long id,@RequestBody UserUpdate userUpdate){
-//  if(currentUser.getId() !=id ) {
-//    throw new AuthorizationException();
-//  }
   return new UserDTO( userService.updateUser(id,userUpdate));
 }
 
