@@ -10,16 +10,10 @@ public class HoaxifyProperties {
 
   private Client client;
 
-
   private  Storage storage = new Storage();
 
-  public Client getClient() {
-    return client;
-  }
+  private String tokenType;
 
-  public void setClient(Client client) {
-    this.client = client;
-  }
 
   public Email getEmail() {
     return email;
@@ -27,6 +21,14 @@ public class HoaxifyProperties {
 
   public void setEmail(Email email) {
     this.email = email;
+  }
+
+  public Client getClient() {
+    return client;
+  }
+
+  public void setClient(Client client) {
+    this.client = client;
   }
 
   public Storage getStorage() {
@@ -37,6 +39,13 @@ public class HoaxifyProperties {
     this.storage = storage;
   }
 
+  public String getTokenType() {
+    return tokenType;
+  }
+
+  public void setTokenType(String tokenType) {
+    this.tokenType = tokenType;
+  }
 
   public static record Email(
     String username,

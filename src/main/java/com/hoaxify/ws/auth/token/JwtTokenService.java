@@ -1,7 +1,6 @@
-package com.hoaxify.ws.auth.dto.token;
+package com.hoaxify.ws.auth.token;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hoaxify.ws.auth.dto.Credentials;
 import com.hoaxify.ws.user.User;
@@ -12,11 +11,12 @@ import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import javax.crypto.SecretKey;
-import org.springframework.context.annotation.Primary;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 @Service
-@Primary
+@ConditionalOnProperty(name = "hoaxify.token-type",havingValue = "jwt")
+
 public class JwtTokenService implements TokenService {
 
   SecretKey key = Keys.hmacShaKeyFor("secret-must-be-at-least-32-chars".getBytes());
@@ -55,6 +55,10 @@ public class JwtTokenService implements TokenService {
     return null;
   }
 
-  public static record TokenSubject(long id,boolean active){ }
+  @Override
+  public void logout(String authorizationHeader) {
+  }
+
+  public static record TokenSubject(long id,boolean active){}
 
 }

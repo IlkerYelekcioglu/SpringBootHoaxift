@@ -1,6 +1,6 @@
 package com.hoaxify.ws.auth.dto;
 
-import com.hoaxify.ws.auth.dto.token.Token;
+import com.hoaxify.ws.auth.token.Token;
 import com.hoaxify.ws.user.dto.UserDTO;
 
 public class AuthResponse {
