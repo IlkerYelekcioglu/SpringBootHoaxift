@@ -1,4 +1,4 @@
-package com.hoaxify.ws.auth.dto.token;
+package com.hoaxify.ws.auth.token;
 
 
 import com.hoaxify.ws.auth.dto.Credentials;
@@ -8,4 +8,6 @@ public interface TokenService {
     public Token createToken(User user, Credentials creds);
 
     public User verifyToken(String authorizationHeader);
+
+    public void logout(String authorizationHeader);
 }

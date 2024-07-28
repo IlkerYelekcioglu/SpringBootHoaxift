@@ -3,8 +3,11 @@ package com.hoaxify.ws.user;
 import com.hoaxify.ws.FileService;
 import com.hoaxify.ws.configuration.CurrentUser;
 import com.hoaxify.ws.email.EmailService;
+import com.hoaxify.ws.user.dto.PasswordResetRequest;
+import com.hoaxify.ws.user.dto.PasswordUpdate;
 import com.hoaxify.ws.user.dto.UserUpdate;
 import com.hoaxify.ws.user.exception.ActivationNotificationException;
+import com.hoaxify.ws.user.exception.InvalidTokenException;
 import com.hoaxify.ws.user.exception.NotFoundException;
 import com.hoaxify.ws.user.exception.NotUniqueEmailException;
 import jakarta.transaction.Transactional;
@@ -80,5 +83,33 @@ public class UserService {
         inDb.setImage(userUpdate.image());
       }
       return  userRepository.save(inDb);
+  }
+
+  public void deleteUser(long id) {
+      User inDB = getUser(id);
+      if(inDB.getImage() != null){
+        fileService.deleteProfileImage(inDB.getImage());
+      }
+      userRepository.delete(inDB);
+  }
+
+  public void handleResetRequest(PasswordResetRequest passwordResetRequest) {
+      User inDB = findByEmail(passwordResetRequest.email());
+      if(inDB == null) throw  new NotFoundException(0);
+      inDB.setPasswordResetToken(UUID.randomUUID().toString());
+      this.userRepository.save(inDB);
+      this.emailService.sendPasswordResetEmail(inDB.getEmail(),inDB.getPasswordResetToken());
+  }
+
+  public void updatePassword(String token,PasswordUpdate passwordUpdate) {
+    User inDB = userRepository.findByPasswordResetToken(token);
+    if(inDB == null) {
+      throw new InvalidTokenException();
+    }
+    inDB.setPasswordResetToken(null);
+    inDB.setPassword(passwordEncoder.encode(passwordUpdate.password()));
+    inDB.setActive(true);
+    userRepository.save(inDB);
+
   }
 }

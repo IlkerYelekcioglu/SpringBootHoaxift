@@ -1,12 +1,17 @@
 package com.hoaxify.ws.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hoaxify.ws.auth.token.Token;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import java.util.List;
 
 
 @Entity
@@ -32,6 +37,11 @@ public class User {
 
     @Lob
     String image;
+
+    String passwordResetToken;
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
+    List<Token> tokens;
 
 
     /**
@@ -101,4 +111,19 @@ public class User {
         this.image = image;
     }
 
+    public String getPasswordResetToken() {
+        return passwordResetToken;
+    }
+
+    public void setPasswordResetToken(String passwordResetToken) {
+        this.passwordResetToken = passwordResetToken;
+    }
+
+    public List<Token> getTokens() {
+        return tokens;
+    }
+
+    public void setTokens(List<Token> tokens) {
+        this.tokens = tokens;
+    }
 }

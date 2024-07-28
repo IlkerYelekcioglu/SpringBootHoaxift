@@ -2,8 +2,8 @@ package com.hoaxify.ws.auth;
 
 import com.hoaxify.ws.auth.dto.AuthResponse;
 import com.hoaxify.ws.auth.dto.Credentials;
-import com.hoaxify.ws.auth.dto.token.Token;
-import com.hoaxify.ws.auth.dto.token.TokenService;
+import com.hoaxify.ws.auth.token.Token;
+import com.hoaxify.ws.auth.token.TokenService;
 import com.hoaxify.ws.auth.exception.AuthenticationException;
 import com.hoaxify.ws.user.User;
 import com.hoaxify.ws.user.UserService;
@@ -32,5 +32,9 @@ public class AuthService {
     authResponse.setToken(token);
     authResponse.setUser(new UserDTO(inDB));
     return authResponse;
+  }
+
+  public void logout(String authorizationHeader) {
+    tokenService.logout(authorizationHeader);
   }
 }

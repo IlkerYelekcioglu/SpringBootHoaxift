@@ -1,9 +1,11 @@
 package com.hoaxify.ws.user;
 
-import com.hoaxify.ws.auth.dto.token.TokenService;
+import com.hoaxify.ws.auth.token.TokenService;
 import com.hoaxify.ws.configuration.CurrentUser;
 import com.hoaxify.ws.shared.GenericMessage;
 import com.hoaxify.ws.shared.Messages;
+import com.hoaxify.ws.user.dto.PasswordResetRequest;
+import com.hoaxify.ws.user.dto.PasswordUpdate;
 import com.hoaxify.ws.user.dto.UserCreate;
 import com.hoaxify.ws.user.dto.UserDTO;
 import com.hoaxify.ws.user.dto.UserUpdate;
@@ -14,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,14 +51,32 @@ public class UserController {
   Page<UserDTO> getUsers(Pageable page,@AuthenticationPrincipal CurrentUser currentUser) {
     return  userService.getUsers(page,currentUser).map(UserDTO::new);
   }
-@GetMapping("/api/v1/users/{id}")
-UserDTO getUserById(@PathVariable long id) {
+  @GetMapping("/api/v1/users/{id}")
+  UserDTO getUserById(@PathVariable long id) {
     return new UserDTO(userService.getUser(id));
 }
-@PutMapping("/api/v1/users/{id}")
-@PreAuthorize("#id == #principal.id")
+
+  @PutMapping("/api/v1/users/{id}")
+  @PreAuthorize("#id == #principal.id")
   UserDTO updateUser(@PathVariable long id,@RequestBody UserUpdate userUpdate){
   return new UserDTO( userService.updateUser(id,userUpdate));
 }
 
+  @DeleteMapping("/api/v1/users/{id}")
+  @PreAuthorize("#id == #principal.id")
+   GenericMessage deleteUser(@PathVariable long id) {
+    userService.deleteUser(id);
+    return new GenericMessage("User is deleted");
+  }
+
+  @PostMapping("/api/v1/users/password-reset")
+  GenericMessage passwordResetRequest(@PathVariable @Valid @RequestBody PasswordResetRequest passwordResetRequest) {
+    userService.handleResetRequest(passwordResetRequest);
+    return new GenericMessage("User is deleted");
+  }
+  @PatchMapping("/api/v1/users/{token}/password")
+  GenericMessage setPassword(@PathVariable String token,@Valid @RequestBody PasswordUpdate passwordUpdate) {
+    userService.updatePassword(token,passwordUpdate);
+    return new GenericMessage("Password updated successfully");
+  }
 }
